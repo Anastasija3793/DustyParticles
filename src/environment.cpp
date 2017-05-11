@@ -1,5 +1,7 @@
 #include "environment.h"
 
+//need to delete
+
 Environment::Environment():
 //some parameters for our world
 
