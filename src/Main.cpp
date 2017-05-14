@@ -1,7 +1,7 @@
 ///
 ///  @file    Main.cpp
 ///  @brief   contains the main method - creates window and runs the simulation
-///  @author (start/modified - main.cpp file)  Richard Southern & Thomas Collingwood
+///  @author (start/modified - main.cpp file) Richard Southern
 ///  @author (finish) Anastasija Belaka
 
 #ifdef _WIN32
@@ -24,14 +24,18 @@
   //#include <GL/glut.h>
 #endif
 
-
 // Include header files for our environment
+
+//particle
 #include "particle.h"
 
 #include "Vec4.h"
 
-//emitter
+//emitter (contains particles)
 #include "emitter.h"
+
+//camera
+#include "camera.h"
 
 
 // The name of the window
@@ -43,26 +47,17 @@ int HEIGHT = 600;
 
 Emitter *myEmitter = NULL;
 
+//Camera *myCamera = NULL;
+
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 
 //OpenGL context
 SDL_GLContext gContext;
 
-/*bool leftMouseOnWorld = false;
-bool leftMouseOnToolbar = false;
-bool leftMouseOnWorldPrevious=false;
-bool rightMouseButton = false;
-bool pookd = false;
-bool updateinprogress = false;
-bool drawInTimer=false;*/
-
 int frame=0;
 
-bool freeze = false;
-//int previousframe=0;
-//int framedrawn=0;
-
+bool pause = false;
 
 
 /**
@@ -111,7 +106,7 @@ Uint32 timerCallback(Uint32 interval, void *) {
 \
     ++frame;
 
-    if(!freeze) myEmitter->update();
+    if(!pause) myEmitter->update();
 
      return interval;
 
@@ -141,32 +136,30 @@ int main( int argc, char* args[] ) {
     }
 
 
-    //particle = new Particle();
-    //Particle particle();
+
     Vec4 particlePosition;
-    particlePosition.set(-1.0f,-1.0f,0.0f,1.0f);
+    particlePosition.set(-1.0f,-1.0f,-1.0f,1.0f);
     Vec4 particleColor;
     //particleColor.set(0.0f,1.0f,0.5f,particle.m_col.m_w);
     particleColor.set(0.0f,1.0f,0.5f,0.7f);
+    //Vec4 randCol((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,0.0f);
     Vec4 explosion;
     //explosion.set(0.0f,0.0f,0.0f,1.0f);
-    //Vec4 pause;
-    //pause.set(0.0f,0.0f,0.0f,1.0f);
-    bool notPause = true;
-    myEmitter =  new Emitter(particlePosition,1000,particleColor,explosion,true,notPause);
-    //Vec4 m_velocity;
-    //int key=0;
-    //int boom = 0;
+    //Vec4 freeze;
+    //freeze.set(0.0f,0.0f,0.0f,1.0f);
+    bool notFreeze = true;
+    myEmitter =  new Emitter(particlePosition,1000,particleColor,explosion,true,notFreeze);
 
+    //myCamera = new Camera();
+    Camera camera;
 
-    //resize window
-    myEmitter->resize(WIDTH,HEIGHT);
-    //particle.setColor(particleColor.m_x,particleColor.m_y,particleColor.m_z,particleColor.m_w);
+    float x = -0.15;
+    float y = -0.15;
+    float z = 2;
 
-    //particle.setColor(0.0f,1.0f,0.0f,m_alpha);
-    //particle.setColor(0.0f,1.0f,0.0f,1.0f);
-
-
+    float rX = -0.1;
+    float rY = -0.1;
+    float rZ = 0;
 
 \
     // Use a timer to update our World. This is the best way to handle updates,
@@ -201,12 +194,12 @@ int main( int argc, char* args[] ) {
                     if ((e.type == SDL_WINDOWEVENT) &&
                             (e.window.event == SDL_WINDOWEVENT_RESIZED))
                     {
-                        SDL_SetWindowSize(gWindow, e.window.data1, e.window.data2);
+                        SDL_GetWindowSize(gWindow, &WIDTH, &HEIGHT);
 
-                        //WIDTH=e.window.data1;
-                        //HEIGHT=e.window.data2;
+                        glViewport(0,0,WIDTH,HEIGHT);
+                        camera.perspective(45,float((float)WIDTH/(float)HEIGHT),0.01,500);
 
-                        myEmitter->resize(e.window.data1,e.window.data2);
+                        //myEmitter->resize(e.window.data1,e.window.data2);
                     }
                     //User requests quit
                     else if( e.type == SDL_QUIT )
@@ -226,6 +219,8 @@ int main( int argc, char* args[] ) {
                         case SDLK_ESCAPE:
                             quit = true;
                             break;
+
+                            //changing colours
                         case SDLK_r:
                             //change to red colour
                             //particle.setColor(1.0f,0.0f,0.0f,1.0f);
@@ -239,7 +234,7 @@ int main( int argc, char* args[] ) {
                             //change to blue colour
                             myEmitter->changeColor(Vec4(0.0f,0.0f,1.0f,0.7f));
                             break;
-                        case SDLK_w:
+                        case SDLK_o:
                             //change to white colour
                             myEmitter->changeColor(Vec4(1.0f,1.0f,1.0f,0.7f));
                             break;
@@ -247,89 +242,114 @@ int main( int argc, char* args[] ) {
                             //change to yellow colour
                             myEmitter->changeColor(Vec4(1.0f,1.0f,0.5f,0.7f));
                             break;
-                        case SDLK_d:
+                        case SDLK_RETURN:
+                            myEmitter->changeColor(Vec4((float)rand()/RAND_MAX,(float)rand()/RAND_MAX,(float)rand()/RAND_MAX,0.7f)); //(float)rand()/RAND_MAX*0.02-0.001
+                            break;
+                        case SDLK_z:
                             //change to default colour
                             myEmitter->changeColor(Vec4(0.0f,1.0f,0.5f,0.7f));
                             break;
+
+                            //behaviour of particles (and emitter)
                         case SDLK_SPACE:
-                            //if (boom < 20000)
-                            //{
-                                //myEmitter->explode(Vec4((float)rand()/RAND_MAX*0.02-0.009,(float)rand()/RAND_MAX*0.02+0.009,0.0f,1.0f),false);
+                            //explode
                             //myEmitter->explode(Vec4(0.02 * M_PI * (float)rand()/RAND_MAX, 0.02 * M_PI * (float)rand()/RAND_MAX,0.0f,1.0f),false);
-                            myEmitter->explode(Vec4(),false);
-
-
-                            //myEmitter->explode(Vec4( (0.001*(((2.0+(float)rand())/RAND_MAX)-1)),(0.001*(((2.0+(float)rand())/RAND_MAX)-1)),0.0f,1.0f ),false);
-                                //myEmitter->explode(Vec4(-0.02,-0.02,0.0f,1.0f),false);
-                                //++boom;
-                            //}
-                            //boom = 0;
+                            myEmitter->explode(false);
                             break;
                         case SDLK_p:
-                            if(freeze) freeze=false;
-                            else freeze = true;
+                            //pause particles and then resume it
+                            if(pause) pause=false;
+                            else pause = true;
+                            break;
+                        case SDLK_f:
+                            //stop only the moving
+                            myEmitter->freeze(false);
+                            break;
+//                        case SDLK_BACKSPACE:
 
-//                        if (notPause){
-//                            myEmitter->pause(Vec4(),false);}
-//                        if (!notPause){
-//                            myEmitter->explode(Vec4((float)rand()/RAND_MAX*0.02-0.009,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f),true);}
+//                            break;
 
-                            //timerID=0;
-
-
-                            /*SDL_TimerID timerID = SDL_AddTimer(2, //elapsed time in milliseconds*
-                                                             timerCallback, //callback function*
-                                                             (void*) NULL //parameters (none)*);
-                                                             );*/
-
+                            //changing camera's parameters
+                        case SDLK_UP:
+                            //moving camera up
+                            y-=0.005;
+                            break;
+                        case SDLK_DOWN:
+                            //moving camera down
+                            y+=0.005;
+                            break;
+                        case SDLK_RIGHT:
+                            //moving camera right
+                            x-=0.005;
+                            break;
+                        case SDLK_LEFT:
+                            //moving camera left
+                            x+=0.005;
+                            break;
+                        case SDLK_0:
+                            //setting camera to the default/start position
+                            x = -0.15;
+                            y = -0.15;
+                            z = 2;
+                            rX = -0.1;
+                            rY = -0.1;
+                            rZ = 0;
+                            break;
+                        case SDLK_1:
+                            //zoom in
+                            z-=0.01;
+                            break;
+                        case SDLK_2:
+                            //zoom out
+                            z+=0.01;
                             break;
 
-//                        case SDLK_LEFT:
-//                            //key=1;
-//                            //glColor4f(1.0f,1.0f,0.5f,1.0f);
-//                            particle.setColor(1.0f,1.0f,1.0f,1.0f);
-//                            //particleColor.set(1.0f,1.0f,1.0f,1.0f);
-//                            break;
+                        case SDLK_w:
+                            rY+=0.005;
+                            break;
+                        case SDLK_s:
+                            rY-=0.005;
+                            break;
+                        case SDLK_d:
+                            rX+=0.005;
+                            break;
+                        case SDLK_a:
+                            rX-=0.005;
+                            break;
+                        case SDLK_e:
+                            rZ-=0.01;
+                            break;
+                        case SDLK_q:
+                            rZ+=0.01;
+                            break;
                         }
                     }
                 }
 
+        glViewport(0,0,WIDTH,HEIGHT);
+        camera.perspective(45,float(WIDTH/HEIGHT),0.01,500);
+        camera.lookAt(Vec4(x,y,z),Vec4(rX,rY,rZ),Vec4(0,1,0));
 
-        //particle-> init();
-
-            /*glBegin(GL_TRIANGLES);
-            glColor3f(1.0f,1.0f,1.0f);
-            glVertex3f(0.0f,0.0f,0.0f);
-            glVertex3f(1.0f,1.0f,0.0f);
-            glVertex3f(2.0f,0.2f,1.0f);
-            glEnd();*/
-
-
-            /*glPointSize(10.0f);
-            glBegin(GL_POINTS);
-            glVertex3f(0.0f,0.0f,0.0f);
-            glEnd();*/
-
-
-//        if (key == 1)
-//        {
-//            m_velocity.set((float)rand()/RAND_MAX*-0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f);
-
-//        }
-
-//        if (key == 1)
-//        {
-//            glColor4f(1.0f,1.0f,0.5f,1.0f);
-//        }
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         myEmitter->draw();
 
+
+        /*glPushMatrix();
+        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
+        glBegin(GL_QUADS);
+
+        glVertex3f();
+        glVertex3f();
+        glVertex3f();
+
+        glEnd();*/
+
         //scaling
-        glMatrixMode(GL_PROJECTION);
+        /*glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glScalef(0.7f,0.7f,0.7f);
-        glMatrixMode(GL_MODELVIEW);
+        glMatrixMode(GL_MODELVIEW);*/
 
         SDL_GL_SwapWindow( gWindow );
     }
@@ -340,7 +360,7 @@ int main( int argc, char* args[] ) {
     // Disable our timer
     SDL_RemoveTimer(timerID);
 
-
+    //delete emitter
     delete myEmitter;
 
     //Destroy window

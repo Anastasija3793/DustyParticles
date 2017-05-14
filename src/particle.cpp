@@ -26,146 +26,101 @@
 
 
 
-Particle::Particle(Vec4::Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notPause) //, Emitter *_emitter)
+Particle::Particle(Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze)
 {
-    //float random = ((float) rand() / (float) RAND_MAX);
-    //float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     m_pos = _pos;
     m_startPos = _pos;
     m_col = _col;
+    //m_randCol.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,0);
     m_velocity = _vel;
     m_notBoom = _notBoom;
-    m_notPause = _notPause;
-    //_pos.set(0.0f,0.0f,0.0f,1.0f);
-    //\!!!m_velocity.set(0.001f,0.001f,0.0f,1.0f);
-    //m_velocity.set(0.001f,0.001f,0.0f,1.0f);
-    //m_velocity.set(0.05f,0.05f,0.0f,1.0f);
-
-    //m_lifetime=rand->randomPositiveNumber(200);
+    m_notFreeze = _notFreeze;
+    m_size = 2.0f;
+    m_randSize = (float)rand()/RAND_MAX*0.02-0.001;
     m_lifetime=200;
     m_nowLife=0;
 
-    //m_origin(m_startPos) or m_prevPos !!!
-    //m_currentLife(m_nowLife)
+    //m_randCol.set(0.002f,0.002f,0.002f,0);
+//    m_randCol.m_x = 0.005f;
+//    m_randCol.m_y = 0.005f;
+//    m_randCol.m_z = 0.005f;
 
-    //m_emitter = _emitter;
 
+//    m_col.m_x=1.0f;
+//    m_col.m_y=1.0f;
+//    m_col.m_z=1.0f;
 }
-
-//void Particle::setColor(float red, float green, float blue, float alpha)
-//{
-//    glColor4f(red,green,blue,m_alpha);
-//}
-
-//void Particle::getColor(float red, float green,float blue, float alpha)
-//{
-//    //
-//}
 
 void Particle::draw()
 {
+    //draw function
+
     //to smooth points
-    //glEnable(GL_POINT_SMOOTH);   //doesn't work
+    glEnable(GL_POINT_SMOOTH);   //doesn't work
 
     //for transparency
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //draw function
-    //glColor3f(0.0f,1.0f,0.0f);
-    //glColor4f(0.0f,1.0f,0.5f,m_alpha);
-
     glColor4f(m_col.m_x,m_col.m_y,m_col.m_z,m_col.m_w);
 
-    glPointSize(2.0f);
+    glPointSize(m_size);
     glBegin(GL_POINTS);
-
-    //glVertex3f(0.0f,0.0f,0.0f);
-    //glNormal3f();
     glVertex4f(m_pos.m_x,m_pos.m_y,m_pos.m_z,m_pos.m_w);
-    //glVertex3f(m_pos.m_x,m_pos.m_y,m_pos.m_z);
-    //glVertex4f(m_velocity.m_x,m_velocity.m_y,m_velocity.m_z,m_velocity.m_w);
     glEnd();
 }
 
 void Particle::update()
 {
     ++m_nowLife;
+    m_size+=m_randSize;
+    //m_col+=m_randCol;
     //m_lifetime=200;
     //m_alpha-=0.005f;
     m_col.m_w-=0.0035f;
+//    m_col.m_x = (float)rand()/RAND_MAX*2-1;
+//    m_col.m_y = (float)rand()/RAND_MAX*2-1;
+//    m_col.m_z = (float)rand()/RAND_MAX*2-1;
     m_pos+=m_velocity;
-    //m_velocity.set(0.0f,0.0f,0.0f,1.0f);
-    m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f); //without it particles stop (only emitter is moving)
-
-    //m_velocity.set( (0.001*(((2.0+(float)rand())/RAND_MAX)-1)),(0.001*(((2.0+(float)rand())/RAND_MAX)-1)),0.0f,1.0f );
-
+    //m_col -= m_randCol;
+    m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,(float)rand()/RAND_MAX*0.02-0.007,1.0f); //without it particles stop (only emitter is moving)
+    //m_col.set((float)rand()/RAND_MAX,1,1,m_col.m_w);
 
 
+    //m_col.m_y+=m_randCol.m_x;
 
-    //m_notBoom=true;
-    //m_pos.m_x+=m_velocity.m_x;
-    //update drawing/particles/scene (some kind of render?)
 
-    //i somehow effect speed
-    /*for (int i=0; i<10; ++i)
+    if (!m_notBoom)
     {
-        m_pos+=m_velocity;
-        //printf("Position x: %4.2f \n", m_pos.m_x);
-    }*/
-
-    //this one can stop
-    /*if (m_nowLife<m_lifetime)
-    {
-
-    m_pos+=m_velocity;
-    ++m_nowLife;}
-    else
-    {
-        m_pos=m_startPos;
-        m_nowLife=0;
-    }*/
-
-//    m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f);
-
-
-
-    if (!m_notBoom)  //do I need this?
-    {
-        //m_pos+=m_velocity;
-        //m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f);
-        m_velocity.set((0.09 * M_PI * (float)rand())/RAND_MAX, (0.09 * M_PI * (float)rand())/RAND_MAX,0.0f,1.0f);
+        m_velocity.set((0.09 * M_PI * (float)rand())/RAND_MAX, (0.09 * M_PI * (float)rand())/RAND_MAX, (0.09 * M_PI * (float)rand())/RAND_MAX, 1.0f);
         //m_lifetime=100;
     }
 
-    if(!m_notPause)
+
+    //to stop the movement of particles (and emitter)
+    if(!m_notFreeze)
     {
         m_velocity.set(0.0f,0.0f,0.0f,1.0f);
-        //m_nowLife = 0.0f;
-        //m_col.m_w = 1.0f;
-
+        m_randSize = 0.0f;
     }
 
-    //m_alpha-=0.0005f;
-
-
-//    for (float i=0; i<1; i+=0.5)
-//        {
-//            m_pos+=m_velocity;
-//            //printf("Position x: %4.2f \n", m_pos.m_x);
-//        }
 
     if(m_nowLife > m_lifetime)
     {
         m_pos=m_startPos;
-        m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,0.0f,1.0f);
+        m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,(float)rand()/RAND_MAX*0.02-0.007,1.0f);
         m_nowLife=0;
+        m_size = 2.0f;
+        m_randSize = (float)rand()/RAND_MAX*0.02-0.001;
         //m_alpha=1.0f
         m_col.m_w=0.7f;
-        m_notBoom=true;
-        m_notPause=true;
 
-        //m_alpha=0.1f;  //if numOfPart=10000;
+//        m_col.m_x=0.0f;
+//        m_col.m_y=0.0f;
+//        m_col.m_z=0.0f;
+        //m_randCol.set(0.0f,0.0f,0.0f,0.0f);
+        m_notBoom=true;
+        m_notFreeze=true;
     }
 
 

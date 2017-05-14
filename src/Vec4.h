@@ -1,6 +1,6 @@
 /// @file Vec4.h
 /// @brief
-/// @author Jon Macey
+/// @author Jon Macey (Modified)
 
 #ifndef VEC4_H
 #define VEC4_H
@@ -41,6 +41,7 @@ public:
     void vertexGL() const;
 
     Vec4 operator -(const Vec4 &_rhs)const;
+    void operator -=(const Vec4 &_rhs);
 
     Vec4 operator *(float _rhs)const;
 

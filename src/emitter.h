@@ -24,47 +24,31 @@
 class Emitter
 {
 public:
-    Emitter(Vec4::Vec4 _pos, int _particlesNumber, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notPause);
-    //~Emitter();
+    Emitter(Vec4::Vec4 _pos, int _particlesNumber, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze);
 
-    //resize the window
-    void resize(int w, int h);
-
+    //update function
     void update();
 
+    //function for changing alpha (transparency)
     void changeColor(Vec4 _col);
 
-    void explode(Vec4 _vel, bool _notBoom);
+    //explosion function
+    void explode(bool _notBoom);
 
+    //draw function
     void draw();
 
-    //set colour
-    //void setColor(float red, float green, float blue, float alpha);
-
-    //void setExplode(Vec4 _vel);
-
-    void pause(Vec4 _vel, bool _notPause);
-
-    //float getAlpha();
-
-    //get colour
-    //void getColor(float red, float green, float blue, float alpha);
-
-
+    //function to stop only the movement
+    void freeze(bool _notFreeze);
 
 private:
     Vec4 m_pos;
     Vec4 m_col;
-
     Vec4 m_velocity;
-
     bool m_notBoom;
-
-    bool m_notPause;
-
+    bool m_notFreeze;
     int m_particlesNumber;
     std::vector <Particle> m_particles; //like array
 };
-
 
 #endif // EMITTER_H

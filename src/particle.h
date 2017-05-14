@@ -22,72 +22,44 @@
 #include <algorithm>
 #include <cstdlib>
 
-//class Emitter;
 
 class Particle
 {
 public:
 
-    //Particle(); //properties?
+    Particle(Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze);
 
-    //Particle(const Particle &_p) = default;  //used from internet
-    Particle(Vec4::Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notPause);  //, Emitter *_emitter);
-    //Particle(Vec4 _pos = Vec4());
-
-    //    m_pos(_pos),
-    //    m_velocity(Vec4(0.1f,0.0f,0.0f,1.0f))
-    //{}
-
-
-    //maybe to initialize a particle or env
-    //virtual void init();
-
-    // draw particle?
+    //draw function
     void draw();
-    //virtual void draw();
 
-    // update moving
+    //update function
     void update();
 
     inline void setCol(Vec4 _col) {m_col = Vec4(_col.m_x,_col.m_y,_col.m_z,m_col.m_w);}
 
+    inline void partExplode(bool _notBoom){m_notBoom = false;}
 
-    inline void partExplode(Vec4 _vel, bool _notBoom){//m_velocity = Vec4(_vel.m_x, _vel.m_y, _vel.m_z, _vel.m_w);
-                                       m_notBoom = false;}
-
-    inline void pause(Vec4 _vel, bool _notPause){m_velocity = Vec4(_vel.m_x, _vel.m_y, _vel.m_z, _vel.m_w);
-                                       m_notPause = false;}
-
-//    //set colour
-//    void setColor(float red, float green, float blue, float alpha);
-
-//    //get colour
-//    void getColor(float red, float green, float blue, float alpha);
-
-
+    inline void freeze(bool _notFreeze){m_notFreeze = false;}
 
 private:
     Vec4 m_col;
+    Vec4 m_randCol;
 
     Vec4 m_velocity; // PUBLIC?
 
     bool m_notBoom; // PUBLIC?
 
-    bool m_notPause; // PUBLIC?
+    bool m_notFreeze; // PUBLIC?
     Vec4 m_pos; //position
 
     Vec4 m_startPos;
-    //int m_size;
-    //int m_colour;
+    float m_size;
+    float m_randSize;
     //int m_speed;
     int m_lifetime;
     int m_nowLife;
     //int m_isDead;
     //float m_alpha;
-
-
-
-    //const Emitter *m_emitter;
 
 };
 

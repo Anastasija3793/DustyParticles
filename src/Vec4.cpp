@@ -1,6 +1,6 @@
 /// @file Vec4.cpp
 /// @brief
-/// @author Jon Macey
+/// @author Jon Macey (Modified)
 
 #include "Vec4.h"
 #include <GL/gl.h>
@@ -104,6 +104,13 @@ void Vec4::operator +=(const Vec4 &_rhs)
     m_x += _rhs.m_x;
     m_y += _rhs.m_y;
     m_z += _rhs.m_z;
+}
+
+void Vec4::operator -=(const Vec4 &_rhs)
+{
+    m_x -= _rhs.m_x;
+    m_y -= _rhs.m_y;
+    m_z -= _rhs.m_z;
 }
 
 

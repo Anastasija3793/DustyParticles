@@ -10,10 +10,10 @@ QMAKE_CXXFLAGS += -std=c++11
 SOURCES += \
     src/Main.cpp \
     src/particle.cpp \
-    src/environment.cpp \
     src/Vec4.cpp \
     src/Mat4.cpp \
-    src/emitter.cpp
+    src/emitter.cpp \
+    src/camera.cpp
 
 LIBS += -L/usr/local/lib
 
@@ -38,7 +38,7 @@ macx: {
 
 HEADERS += \
     src/particle.h \
-    src/environment.h \
     src/Vec4.h \
     src/Mat4.h \
+    src/camera.h \
     src/emitter.h

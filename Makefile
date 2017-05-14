@@ -50,16 +50,16 @@ OBJECTS_DIR   = obj/
 
 SOURCES       = src/Main.cpp \
 		src/particle.cpp \
-		src/environment.cpp \
 		src/Vec4.cpp \
 		src/Mat4.cpp \
-		src/emitter.cpp 
+		src/emitter.cpp \
+		src/camera.cpp 
 OBJECTS       = obj/Main.o \
 		obj/particle.o \
-		obj/environment.o \
 		obj/Vec4.o \
 		obj/Mat4.o \
-		obj/emitter.o
+		obj/emitter.o \
+		obj/camera.o
 DIST          = ../../Qt/5.8/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.8/gcc_64/mkspecs/common/unix.conf \
 		../../Qt/5.8/gcc_64/mkspecs/common/linux.conf \
@@ -229,15 +229,15 @@ DIST          = ../../Qt/5.8/gcc_64/mkspecs/features/spec_pre.prf \
 		../../Qt/5.8/gcc_64/mkspecs/features/yacc.prf \
 		../../Qt/5.8/gcc_64/mkspecs/features/lex.prf \
 		DustyParticles.pro src/particle.h \
-		src/environment.h \
 		src/Vec4.h \
 		src/Mat4.h \
+		src/camera.h \
 		src/emitter.h src/Main.cpp \
 		src/particle.cpp \
-		src/environment.cpp \
 		src/Vec4.cpp \
 		src/Mat4.cpp \
-		src/emitter.cpp
+		src/emitter.cpp \
+		src/camera.cpp
 QMAKE_TARGET  = DustyParticles
 DESTDIR       = 
 TARGET        = DustyParticles
@@ -607,8 +607,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents ../../Qt/5.8/gcc_64/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents src/particle.h src/environment.h src/Vec4.h src/Mat4.h src/emitter.h $(DISTDIR)/
-	$(COPY_FILE) --parents src/Main.cpp src/particle.cpp src/environment.cpp src/Vec4.cpp src/Mat4.cpp src/emitter.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents src/particle.h src/Vec4.h src/Mat4.h src/camera.h src/emitter.h $(DISTDIR)/
+	$(COPY_FILE) --parents src/Main.cpp src/particle.cpp src/Vec4.cpp src/Mat4.cpp src/emitter.cpp src/camera.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -655,17 +655,14 @@ compiler_clean: compiler_moc_predefs_clean
 ####### Compile
 
 obj/Main.o: src/Main.cpp src/particle.h \
-		src/Vec4.h
+		src/Vec4.h \
+		src/emitter.h \
+		src/camera.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Main.o src/Main.cpp
 
 obj/particle.o: src/particle.cpp src/particle.h \
 		src/Vec4.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/particle.o src/particle.cpp
-
-obj/environment.o: src/environment.cpp src/environment.h \
-		src/particle.h \
-		src/Vec4.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/environment.o src/environment.cpp
 
 obj/Vec4.o: src/Vec4.cpp src/Vec4.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Vec4.o src/Vec4.cpp
@@ -673,8 +670,15 @@ obj/Vec4.o: src/Vec4.cpp src/Vec4.h
 obj/Mat4.o: src/Mat4.cpp src/Mat4.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/Mat4.o src/Mat4.cpp
 
-obj/emitter.o: src/emitter.cpp 
+obj/emitter.o: src/emitter.cpp src/emitter.h \
+		src/Vec4.h \
+		src/particle.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/emitter.o src/emitter.cpp
+
+obj/camera.o: src/camera.cpp src/camera.h \
+		src/Vec4.h \
+		src/Mat4.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o obj/camera.o src/camera.cpp
 
 ####### Install
 
