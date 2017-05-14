@@ -27,15 +27,15 @@
 // Include header files for our environment
 
 //particle
-#include "particle.h"
+#include "Particle.h"
 
 #include "Vec4.h"
 
 //emitter (contains particles)
-#include "emitter.h"
+#include "Emitter.h"
 
 //camera
-#include "camera.h"
+#include "Camera.h"
 
 
 // The name of the window
@@ -46,8 +46,6 @@ int WIDTH = 900;
 int HEIGHT = 600;
 
 Emitter *myEmitter = NULL;
-
-//Camera *myCamera = NULL;
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -109,9 +107,6 @@ Uint32 timerCallback(Uint32 interval, void *) {
     if(!pause) myEmitter->update();
 
      return interval;
-
-    //myEMitter stuff
-
 }
 
 /**
@@ -140,15 +135,9 @@ int main( int argc, char* args[] ) {
     Vec4 particlePosition;
     particlePosition.set(-1.0f,-1.0f,-1.0f,1.0f);
     Vec4 particleColor;
-    //particleColor.set(0.0f,1.0f,0.5f,particle.m_col.m_w);
     particleColor.set(0.0f,1.0f,0.5f,0.7f);
-    //Vec4 randCol((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,0.0f);
     Vec4 explosion;
-    //explosion.set(0.0f,0.0f,0.0f,1.0f);
-    //Vec4 freeze;
-    //freeze.set(0.0f,0.0f,0.0f,1.0f);
-    bool notFreeze = true;
-    myEmitter =  new Emitter(particlePosition,1000,particleColor,explosion,true,notFreeze);
+    myEmitter =  new Emitter(particlePosition,1000,particleColor,explosion,true,true,true);
 
     //myCamera = new Camera();
     Camera camera;
@@ -223,7 +212,6 @@ int main( int argc, char* args[] ) {
                             //changing colours
                         case SDLK_r:
                             //change to red colour
-                            //particle.setColor(1.0f,0.0f,0.0f,1.0f);
                             myEmitter->changeColor(Vec4(1.0f,0.0f,0.0f,0.7f));
                             break;
                         case SDLK_g:
@@ -243,7 +231,7 @@ int main( int argc, char* args[] ) {
                             myEmitter->changeColor(Vec4(1.0f,1.0f,0.5f,0.7f));
                             break;
                         case SDLK_RETURN:
-                            myEmitter->changeColor(Vec4((float)rand()/RAND_MAX,(float)rand()/RAND_MAX,(float)rand()/RAND_MAX,0.7f)); //(float)rand()/RAND_MAX*0.02-0.001
+                            myEmitter->changeColor(Vec4((float)rand()/RAND_MAX,(float)rand()/RAND_MAX,(float)rand()/RAND_MAX,0.7f));
                             break;
                         case SDLK_z:
                             //change to default colour
@@ -253,17 +241,20 @@ int main( int argc, char* args[] ) {
                             //behaviour of particles (and emitter)
                         case SDLK_SPACE:
                             //explode
-                            //myEmitter->explode(Vec4(0.02 * M_PI * (float)rand()/RAND_MAX, 0.02 * M_PI * (float)rand()/RAND_MAX,0.0f,1.0f),false);
                             myEmitter->explode(false);
                             break;
                         case SDLK_p:
                             //pause particles and then resume it
-                            if(pause) pause=false;
+                            if(pause) pause = false;
                             else pause = true;
                             break;
                         case SDLK_f:
                             //stop only the moving
                             myEmitter->freeze(false);
+                            break;
+
+                        case SDLK_TAB:
+                            myEmitter->galaxyDust(false);
                             break;
 //                        case SDLK_BACKSPACE:
 
@@ -334,22 +325,6 @@ int main( int argc, char* args[] ) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         myEmitter->draw();
 
-
-        /*glPushMatrix();
-        glPolygonMode(GL_FRONT_AND_BACK,GL_LINE);
-        glBegin(GL_QUADS);
-
-        glVertex3f();
-        glVertex3f();
-        glVertex3f();
-
-        glEnd();*/
-
-        //scaling
-        /*glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glScalef(0.7f,0.7f,0.7f);
-        glMatrixMode(GL_MODELVIEW);*/
 
         SDL_GL_SwapWindow( gWindow );
     }

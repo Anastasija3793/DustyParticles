@@ -15,14 +15,10 @@
   //#include <GL/glut.h>
 #endif
 
-#include "camera.h"
+#include "Camera.h"
 #include "Mat4.h"
 #include <cmath>
 
-/*Camera::Camera()
-{
-
-}*/
 
 void Camera::lookAt(Vec4 _eye, Vec4 _look, Vec4 _up)
 {

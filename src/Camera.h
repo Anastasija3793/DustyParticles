@@ -24,13 +24,9 @@
 class Camera
 {
 public:
-    //Camera();
     void lookAt(Vec4 _eye, Vec4 _look, Vec4 _up);
     void perspective(float _fovy,float _aspect, float _zNear, float _zFar);
     float radians(float _deg );
-//private:
-//    Camera();
-//    ~Camera();
 };
 
 #endif // CAMERA_H

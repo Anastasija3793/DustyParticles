@@ -1,4 +1,4 @@
-#include "particle.h"
+#include "Particle.h"
 #include "Vec4.h"
 
 #ifdef __APPLE__
@@ -25,38 +25,25 @@
 #include <cstdlib>
 
 
-
-Particle::Particle(Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze)
+Particle::Particle(Vec4 _pos, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze, bool _notGalaxyDust)
 {
     m_pos = _pos;
     m_startPos = _pos;
     m_col = _col;
-    //m_randCol.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02-0.001,0);
     m_velocity = _vel;
     m_notBoom = _notBoom;
     m_notFreeze = _notFreeze;
+    m_notGalaxyDust = _notGalaxyDust;
     m_size = 2.0f;
     m_randSize = (float)rand()/RAND_MAX*0.02-0.001;
     m_lifetime=200;
     m_nowLife=0;
-
-    //m_randCol.set(0.002f,0.002f,0.002f,0);
-//    m_randCol.m_x = 0.005f;
-//    m_randCol.m_y = 0.005f;
-//    m_randCol.m_z = 0.005f;
-
-
-//    m_col.m_x=1.0f;
-//    m_col.m_y=1.0f;
-//    m_col.m_z=1.0f;
 }
 
 void Particle::draw()
 {
-    //draw function
-
     //to smooth points
-    glEnable(GL_POINT_SMOOTH);   //doesn't work
+    glEnable(GL_POINT_SMOOTH);
 
     //for transparency
     glEnable(GL_BLEND);
@@ -74,34 +61,29 @@ void Particle::update()
 {
     ++m_nowLife;
     m_size+=m_randSize;
-    //m_col+=m_randCol;
-    //m_lifetime=200;
-    //m_alpha-=0.005f;
     m_col.m_w-=0.0035f;
-//    m_col.m_x = (float)rand()/RAND_MAX*2-1;
-//    m_col.m_y = (float)rand()/RAND_MAX*2-1;
-//    m_col.m_z = (float)rand()/RAND_MAX*2-1;
     m_pos+=m_velocity;
-    //m_col -= m_randCol;
     m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,(float)rand()/RAND_MAX*0.02-0.007,1.0f); //without it particles stop (only emitter is moving)
-    //m_col.set((float)rand()/RAND_MAX,1,1,m_col.m_w);
-
-
-    //m_col.m_y+=m_randCol.m_x;
-
 
     if (!m_notBoom)
     {
         m_velocity.set((0.09 * M_PI * (float)rand())/RAND_MAX, (0.09 * M_PI * (float)rand())/RAND_MAX, (0.09 * M_PI * (float)rand())/RAND_MAX, 1.0f);
-        //m_lifetime=100;
     }
-
 
     //to stop the movement of particles (and emitter)
     if(!m_notFreeze)
     {
         m_velocity.set(0.0f,0.0f,0.0f,1.0f);
         m_randSize = 0.0f;
+    }
+
+    if(!m_notGalaxyDust)
+    {
+        m_pos.set((float)rand()/RAND_MAX*1.5-0.8,(float)rand()/RAND_MAX*1.5-0.8,(float)rand()/RAND_MAX*1.5-0.8,1.0f);
+        m_pos.normalize();
+        m_col.set(0.5+0.5*(float)rand()/RAND_MAX,0.5+0.5*(float)rand()/RAND_MAX,0.5+0.5*(float)rand()/RAND_MAX,1.0f);
+        m_randSize = 0.0f;
+        m_size = (float)rand()/RAND_MAX*5.0;
     }
 
 
@@ -112,19 +94,9 @@ void Particle::update()
         m_nowLife=0;
         m_size = 2.0f;
         m_randSize = (float)rand()/RAND_MAX*0.02-0.001;
-        //m_alpha=1.0f
         m_col.m_w=0.7f;
-
-//        m_col.m_x=0.0f;
-//        m_col.m_y=0.0f;
-//        m_col.m_z=0.0f;
-        //m_randCol.set(0.0f,0.0f,0.0f,0.0f);
         m_notBoom=true;
         m_notFreeze=true;
+        m_notGalaxyDust=true;
     }
-
-
-  //  printf("Position x: %4.2f \n", m_pos.m_x);
-
-    //printf("Position y: %4.2f \n", m_pos.m_y);
 }

@@ -18,16 +18,19 @@
 #include <vector>
 #include "Vec4.h"
 
-#include "particle.h"
+#include "Particle.h"
 
 
 class Emitter
 {
 public:
-    Emitter(Vec4::Vec4 _pos, int _particlesNumber, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze);
+    Emitter(Vec4 _pos, int _particlesNumber, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze, bool _notGalaxyDust);
 
     //update function
     void update();
+
+    //draw function
+    void draw();
 
     //function for changing alpha (transparency)
     void changeColor(Vec4 _col);
@@ -35,11 +38,10 @@ public:
     //explosion function
     void explode(bool _notBoom);
 
-    //draw function
-    void draw();
-
     //function to stop only the movement
     void freeze(bool _notFreeze);
+
+    void galaxyDust(bool _notGalaxyDust);
 
 private:
     Vec4 m_pos;
@@ -47,6 +49,7 @@ private:
     Vec4 m_velocity;
     bool m_notBoom;
     bool m_notFreeze;
+    bool m_notGalaxyDust;
     int m_particlesNumber;
     std::vector <Particle> m_particles; //like array
 };
