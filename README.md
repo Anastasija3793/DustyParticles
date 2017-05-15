@@ -3,16 +3,14 @@ Change colours:
 
 r - red; g - green; b - blue; y - yellow; o - white; z - default; ENTER (RETURN) - random colour
 
-
-Control keys:
+## Control keys:
 
 p - pause/resume; 
 space - explosion; 
 f - freeze
 TAB - 'dust galaxy'/sphere;
 
-
-Camera control keys:
+## Camera control keys:
 
 UP - move up; DOWN - move down; RIGHT - move right; LEFT - move left;
 
