@@ -1,13 +1,16 @@
 # DustyParticles
-Change colours:
+## Change colours:
 
 r - red; g - green; b - blue; y - yellow; o - white; z - default; ENTER (RETURN) - random colour
 
 ## Control keys:
 
 p - pause/resume; 
+
 space - explosion; 
-f - freeze
+
+f - freeze;
+
 TAB - 'dust galaxy'/sphere;
 
 ## Camera control keys:
