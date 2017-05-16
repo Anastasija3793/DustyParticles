@@ -65,6 +65,7 @@ void Particle::update()
     m_velocity.set((float)rand()/RAND_MAX*0.02-0.001,(float)rand()/RAND_MAX*0.02+0.001,(float)rand()/RAND_MAX*0.02-0.007,1.0f);
 
     //the 'life process' of particle
+    //don't delete particles because it's more efficient
     if(m_nowLife > m_lifetime)
     {
         m_pos=m_startPos;
