@@ -28,8 +28,11 @@ After a certain time particles return to their normal/default state.
 ## Camera control keys:
 
 **UP arrow** - move up; 
+
 **DOWN arrow** - move down; 
+
 **RIGHT arrow** - move right; 
+
 **LEFT arrow** - move left;
 
 - 1 - 'zoom in'/move closer; 
