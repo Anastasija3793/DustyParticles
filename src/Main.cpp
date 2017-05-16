@@ -1,8 +1,19 @@
-///
-///  @file    Main.cpp
-///  @brief   contains the main method - creates window and runs the simulation
-///  @author (start/modified - main.cpp file) Richard Southern
-///  @author (finish) Anastasija Belaka
+/// @file Main.cpp
+/// @brief Title of Brief: Programming project 2
+///        This is the program which represents a particle system named 'DustyParticles'.
+///        The particle system itself represents a 'cloud' of dust particles.
+///        The 'cloud' floats diagonally when it is in its normal/default behaviour (state).
+///        However, it changes when states are switched (such as 'explosion', 'freeze', 'galaxy')
+///        by pressing certain keys (see README.md file).
+///        It is also possible to pause/unpause timer and change particles colours (see README.md file).
+///        After a certain time particles return to their normal/default state.
+///        The main file (Main.cpp) contains the main method - creates window and runs the simulation.
+/// @author (start/modified) Richard Southern
+/// @author (finish) Anastasija Belaka
+/// @version 10.0
+/// @date 15/05/2017 Updated to NCCA Coding standard
+/// Revision History : See https://github.com/Anastasija3793/DustyParticles
+/// Initial Version 11/04/2017
 
 #ifdef _WIN32
 #include <windows.h>
@@ -26,17 +37,16 @@
 
 // Include header files for our environment
 
-//particle
+//Particle
 #include "Particle.h"
 
 #include "Vec4.h"
 
-//emitter (contains particles)
+//Emitter (contains particles)
 #include "Emitter.h"
 
-//camera
+//Camera
 #include "Camera.h"
-
 
 // The name of the window
 #define WINDOW_TITLE "DustyParticles"
@@ -45,6 +55,7 @@
 int WIDTH = 900;
 int HEIGHT = 600;
 
+//Emitter
 Emitter *myEmitter = NULL;
 
 //The window we'll be rendering to
@@ -100,13 +111,14 @@ int initSDL()
  * @param interval The elapsed time (not used - World uses it's own internal clock)
  * @return the elapsed time.
  */
-Uint32 timerCallback(Uint32 interval, void *) {
-\
+Uint32 timerCallback(Uint32 interval, void *)
+{
+    if(!pause)
+    {
+        myEmitter->update();
+    }
     ++frame;
-
-    if(!pause) myEmitter->update();
-
-     return interval;
+    return interval;
 }
 
 /**
@@ -130,16 +142,15 @@ int main( int argc, char* args[] ) {
         fprintf(stderr, "Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError() );
     }
 
-
-
+    //Setting particles start/default position
     Vec4 particlePosition;
     particlePosition.set(-1.0f,-1.0f,-1.0f,1.0f);
+    //Setting particles start/default colour
     Vec4 particleColor;
     particleColor.set(0.0f,1.0f,0.5f,0.7f);
-    Vec4 explosion;
-    myEmitter =  new Emitter(particlePosition,1000,particleColor,explosion,true,true,true);
+    myEmitter =  new Emitter(particlePosition,1000,particleColor);
 
-    //myCamera = new Camera();
+    //Camera and its default parameters
     Camera camera;
 
     float x = -0.15;
@@ -149,12 +160,10 @@ int main( int argc, char* args[] ) {
     float rX = -0.1;
     float rY = -0.1;
     float rZ = 0;
-
 \
     // Use a timer to update our World. This is the best way to handle updates,
     // as the timer runs in a separate thread and is therefore not affected by the
     // rendering performance.
-    //int t = 20;
 
     SDL_TimerID timerID = SDL_AddTimer(20, //elapsed time in milliseconds*
                                      timerCallback, //callback function*
@@ -187,20 +196,12 @@ int main( int argc, char* args[] ) {
 
                         glViewport(0,0,WIDTH,HEIGHT);
                         camera.perspective(45,float((float)WIDTH/(float)HEIGHT),0.01,500);
-
-                        //myEmitter->resize(e.window.data1,e.window.data2);
                     }
                     //User requests quit
                     else if( e.type == SDL_QUIT )
                     {
                       quit = true;
                     }
-                    /*else if(e.type == SDL_TEXTINPUT)
-                    {
-                        int x = 0, y = 0;
-                        SDL_GetMouseState(&x,&y);
-                    }*/
-
                     else if (e.type == SDL_KEYDOWN)
                     {
                         switch (e.key.keysym.sym)
@@ -208,111 +209,55 @@ int main( int argc, char* args[] ) {
                         case SDLK_ESCAPE:
                             quit = true;
                             break;
+                        //changing colours
+                        //change to red colour
+                        case SDLK_r: { myEmitter->changeColor(Vec4(1.0f,0.0f,0.0f,0.7f));   break; }
+                        //change to green colour
+                        case SDLK_g: { myEmitter->changeColor(Vec4(0.0f,1.0f,0.0f,0.7f));   break; }
+                        //change to blue colour
+                        case SDLK_b: { myEmitter->changeColor(Vec4(0.0f,0.0f,1.0f,0.7f));   break; }
+                        //change to white colour
+                        case SDLK_o: { myEmitter->changeColor(Vec4(1.0f,1.0f,1.0f,0.7f));   break; }
+                        //change to yellow colour
+                        case SDLK_y: { myEmitter->changeColor(Vec4(1.0f,1.0f,0.5f,0.7f));   break; }
+                        //change to random colour
+                        case SDLK_RETURN: { myEmitter->changeColor(Vec4((float)rand()/RAND_MAX,(float)rand()/RAND_MAX,(float)rand()/RAND_MAX,0.7f));     break; }
+                        //change to default colour
+                        case SDLK_z: { myEmitter->changeColor(Vec4(0.0f,1.0f,0.5f,0.7f));   break; }
 
-                            //changing colours
-                        case SDLK_r:
-                            //change to red colour
-                            myEmitter->changeColor(Vec4(1.0f,0.0f,0.0f,0.7f));
-                            break;
-                        case SDLK_g:
-                            //change to green colour
-                            myEmitter->changeColor(Vec4(0.0f,1.0f,0.0f,0.7f));
-                            break;
-                        case SDLK_b:
-                            //change to blue colour
-                            myEmitter->changeColor(Vec4(0.0f,0.0f,1.0f,0.7f));
-                            break;
-                        case SDLK_o:
-                            //change to white colour
-                            myEmitter->changeColor(Vec4(1.0f,1.0f,1.0f,0.7f));
-                            break;
-                        case SDLK_y:
-                            //change to yellow colour
-                            myEmitter->changeColor(Vec4(1.0f,1.0f,0.5f,0.7f));
-                            break;
-                        case SDLK_RETURN:
-                            myEmitter->changeColor(Vec4((float)rand()/RAND_MAX,(float)rand()/RAND_MAX,(float)rand()/RAND_MAX,0.7f));
-                            break;
-                        case SDLK_z:
-                            //change to default colour
-                            myEmitter->changeColor(Vec4(0.0f,1.0f,0.5f,0.7f));
-                            break;
+                        //behaviour of particles (and emitter)
+                        //pause particles and then resume it
+                        case SDLK_p: { pause = !pause;  break; }
+                        //switching to the following cases
+                        //explode
+                        case SDLK_SPACE: { myEmitter->changeState(2);   break; }
+                        //stop only the moving/freeze
+                        case SDLK_f: { myEmitter->changeState(1);       break; }
+                        //create 'Dust Galaxy'/sphere
+                        case SDLK_TAB: { myEmitter->changeState(3);     break; }
 
-                            //behaviour of particles (and emitter)
-                        case SDLK_SPACE:
-                            //explode
-                            myEmitter->explode(false);
-                            break;
-                        case SDLK_p:
-                            //pause particles and then resume it
-                            if(pause) pause = false;
-                            else pause = true;
-                            break;
-                        case SDLK_f:
-                            //stop only the moving
-                            myEmitter->freeze(false);
-                            break;
-
-                        case SDLK_TAB:
-                            myEmitter->galaxyDust(false);
-                            break;
-//                        case SDLK_BACKSPACE:
-
-//                            break;
-
-                            //changing camera's parameters
-                        case SDLK_UP:
-                            //moving camera up
-                            y-=0.005;
-                            break;
-                        case SDLK_DOWN:
-                            //moving camera down
-                            y+=0.005;
-                            break;
-                        case SDLK_RIGHT:
-                            //moving camera right
-                            x-=0.005;
-                            break;
-                        case SDLK_LEFT:
-                            //moving camera left
-                            x+=0.005;
-                            break;
-                        case SDLK_0:
-                            //setting camera to the default/start position
-                            x = -0.15;
-                            y = -0.15;
-                            z = 2;
-                            rX = -0.1;
-                            rY = -0.1;
-                            rZ = 0;
-                            break;
-                        case SDLK_1:
-                            //zoom in
-                            z-=0.01;
-                            break;
-                        case SDLK_2:
-                            //zoom out
-                            z+=0.01;
-                            break;
-
-                        case SDLK_w:
-                            rY+=0.005;
-                            break;
-                        case SDLK_s:
-                            rY-=0.005;
-                            break;
-                        case SDLK_d:
-                            rX+=0.005;
-                            break;
-                        case SDLK_a:
-                            rX-=0.005;
-                            break;
-                        case SDLK_e:
-                            rZ-=0.01;
-                            break;
-                        case SDLK_q:
-                            rZ+=0.01;
-                            break;
+                        //changing camera's parameters
+                        //moving camera up
+                        case SDLK_UP: { y-=0.005;       break; }
+                        //moving camera down
+                        case SDLK_DOWN: { y+=0.005;     break; }
+                        //moving camera right
+                        case SDLK_RIGHT: { x-=0.005;    break; }
+                        //moving camera left
+                        case SDLK_LEFT: { x+=0.005;     break; }
+                        //setting camera to the default/start position and 'target'
+                        case SDLK_0: {x = -0.15; y = -0.15; z = 2; rX = -0.1; rY = -0.1; rZ = 0; break; }
+                        //'zoom in'/move closer
+                        case SDLK_1: { z-=0.01;     break; }
+                        //'zoom out'/move farther
+                        case SDLK_2: { z+=0.01;     break; }
+                        //changing where camera look at (target)
+                        case SDLK_w: { rY+=0.005;   break; }
+                        case SDLK_s: { rY-=0.005;   break; }
+                        case SDLK_d: { rX+=0.005;   break; }
+                        case SDLK_a: { rX-=0.005;   break; }
+                        case SDLK_e: { rZ-=0.01;    break; }
+                        case SDLK_q: { rZ+=0.01;    break; }
                         }
                     }
                 }
@@ -321,10 +266,8 @@ int main( int argc, char* args[] ) {
         camera.perspective(45,float(WIDTH/HEIGHT),0.01,500);
         camera.lookAt(Vec4(x,y,z),Vec4(rX,rY,rZ),Vec4(0,1,0));
 
-
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         myEmitter->draw();
-
 
         SDL_GL_SwapWindow( gWindow );
     }

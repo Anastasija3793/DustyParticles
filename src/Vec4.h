@@ -1,6 +1,6 @@
 /// @file Vec4.h
-/// @brief
-/// @author Jon Macey (Modified)
+/// @brief Enclose Vector object (3D point)
+/// @author Jon Macey (Modified by Anastasija Belaka)
 
 #ifndef VEC4_H
 #define VEC4_H
@@ -28,28 +28,23 @@ public:
     Vec4()=default;
     Vec4(float _x, float _y, float _z, float _w=1.0) :
         m_x(_x), m_y(_y), m_z(_z), m_w(_w){}
-
     Vec4 cross(const Vec4 &_r) const;
     void normalize();
     float dot(const Vec4 &_r) const;
-
     void colourGL() const;
     float length() const;
     float lengthSquared() const;
     void normalGL() const;
     void set(float _x, float _y, float _z, float _w=1.0);
     void vertexGL() const;
-
-    Vec4 operator -(const Vec4 &_rhs)const;
-    void operator -=(const Vec4 &_rhs);
-
     Vec4 operator *(float _rhs)const;
-
+    Vec4 operator -(const Vec4 &_rhs)const;
+    //added
+    void operator -=(const Vec4 &_rhs);
+    //added
     Vec4 operator +(const Vec4 &_rhs) const;
+    //added
     void operator +=(const Vec4 &_rhs);
-
-    //Vec4 operator =(const Vec4 &_rhs);
-
 
     union
     {
@@ -60,9 +55,8 @@ public:
             float m_y;
             float m_z;
             float m_w;
-
         };
     };
-};
+}; //end class
 
 #endif // VEC4_H

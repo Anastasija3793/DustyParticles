@@ -1,5 +1,12 @@
 #ifndef EMITTER_H
 #define EMITTER_H
+/// @file Emitter.h
+/// @brief Emitter or 'cloud' which contains particles
+/// @author Anastasija Belaka
+/// @version 10.0
+/// @date 15/05/2017 Updated to NCCA Coding standard
+/// Revision History : See https://github.com/Anastasija3793/DustyParticles
+/// Initial Version 11/04/2017
 
 #ifdef __APPLE__
   #include <OpenGL/gl.h>
@@ -17,41 +24,64 @@
 
 #include <vector>
 #include "Vec4.h"
-
 #include "Particle.h"
 
+//----------------------------------------------------------------------------------------------------------------------
+/// @class Emitter "Emitter.h"
+/// @brief Emitter class which contains particles (and their behaviour/attributes by passing)
+/// @author Anastasija Belaka
+/// @version 10.0
+/// @date 15/05/2017 Updated to NCCA Coding standard
+/// Revision History : See https://github.com/Anastasija3793/DustyParticles
+//----------------------------------------------------------------------------------------------------------------------
 
 class Emitter
 {
 public:
-    Emitter(Vec4 _pos, int _particlesNumber, Vec4 _col, Vec4 _vel, bool _notBoom, bool _notFreeze, bool _notGalaxyDust);
 
-    //update function
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief Emitter or 'cloud' which contains moving particles
+    /// @param[in] _pos the position of the emitter
+    /// @param[in] _particlesNumber the number of particles
+    /// @param[in] _col the colour of particles/emitter (rgba)
+    //----------------------------------------------------------------------------------------------------------------------
+    Emitter(Vec4 _pos, int _particlesNumber, Vec4 _col);
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief Update Method updates emitter
+    //----------------------------------------------------------------------------------------------------------------------
     void update();
-
-    //draw function
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief Draw Method draws emitter
+    //----------------------------------------------------------------------------------------------------------------------
     void draw();
-
-    //function for changing alpha (transparency)
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief Change Colour Method changes the colour (need for alpha channel (changing transparency))
+    //----------------------------------------------------------------------------------------------------------------------
     void changeColor(Vec4 _col);
-
-    //explosion function
-    void explode(bool _notBoom);
-
-    //function to stop only the movement
-    void freeze(bool _notFreeze);
-
-    void galaxyDust(bool _notGalaxyDust);
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief Change State Method changes/switches the state ('normal' / 'freeze' / 'explosion' / 'galaxy')
+    //----------------------------------------------------------------------------------------------------------------------
+    void changeState(int _state);
 
 private:
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief the position of emitter
+    //----------------------------------------------------------------------------------------------------------------------
     Vec4 m_pos;
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief the colour of emitter/particles
+    //----------------------------------------------------------------------------------------------------------------------
     Vec4 m_col;
-    Vec4 m_velocity;
-    bool m_notBoom;
-    bool m_notFreeze;
-    bool m_notGalaxyDust;
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief the number of particles
+    //----------------------------------------------------------------------------------------------------------------------
     int m_particlesNumber;
-    std::vector <Particle> m_particles; //like array
-};
+    //----------------------------------------------------------------------------------------------------------------------
+    /// @brief the container where particles are stored
+    //----------------------------------------------------------------------------------------------------------------------
+    std::vector <Particle> m_particles;
+};  //end class
 
 #endif // EMITTER_H
+
+//----------------------------------------------------------------------------------------------------------------------

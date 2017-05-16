@@ -1,5 +1,5 @@
 /// @file Mat4.h
-/// @brief
+/// @brief Matrix 4x4; Needed to rotate particles (in 3D mode)
 /// @author Jon Macey
 
 #ifndef MAT4_H
@@ -65,7 +65,6 @@
 
        };
      };
-
- };
+ }; //end class
 
 #endif // MAT4_H

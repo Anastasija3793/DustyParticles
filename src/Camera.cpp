@@ -1,24 +1,8 @@
-///from Jon Macey
-
-
-#ifdef __APPLE__
-  #include <OpenGL/gl.h>
-  #include <OpenGL/glu.h>
-  #include "GLUT/glut.h"
-#include <SDL.h>
-#include <SDL_image.h>
-#else
-  #include <SDL2/SDL.h>
-  #include <SDL2/SDL_image.h>
-  #include <GL/gl.h>
-  #include <GL/glu.h>
-  //#include <GL/glut.h>
-#endif
+/// @file Camera.cpp
+/// @brief Camera (to change the view)
+/// @author Jon Macey
 
 #include "Camera.h"
-#include "Mat4.h"
-#include <cmath>
-
 
 void Camera::lookAt(Vec4 _eye, Vec4 _look, Vec4 _up)
 {
@@ -45,7 +29,7 @@ void Camera::lookAt(Vec4 _eye, Vec4 _look, Vec4 _up)
     mv.m_32= _eye.dot(n);
     mv.loadModelView();
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 void Camera::perspective(float _fovy, float _aspect, float _zNear, float _zFar)
 {
     float range = tan(radians(_fovy / 2.0)) * _zNear;
@@ -61,8 +45,9 @@ void Camera::perspective(float _fovy, float _aspect, float _zNear, float _zFar)
     result.m_32 = - (2.0f* _zFar * _zNear) / (_zFar - _zNear);
     result.loadProjection();
 }
-
+//----------------------------------------------------------------------------------------------------------------------
 float Camera::radians(float _deg)
 {
     return (_deg/180.0f) * M_PI;
 }
+//----------------------------------------------------------------------------------------------------------------------
