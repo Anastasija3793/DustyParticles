@@ -31,13 +31,9 @@ After a certain time particles return to their normal/default state.
 - DOWN arrow - move down; 
 - RIGHT arrow - move right; 
 - LEFT arrow - move left;
-
-
 - 1 - 'zoom in'/move closer; 
 - 2 - 'zoom out'/move farther; 
 - 0 - return camera to the default position/look at
-
-
 - w - look up; 
 - s - look down; 
 - d - look right; 
@@ -50,4 +46,8 @@ After a certain time particles return to their normal/default state.
 - SDL2
 
 ## References
-
+- William T. Reeves (1983). *Particle Systems - A Technique for Modeling a Class of Fuzzy Objects* [online]. Available from: https://www.lri.fr/%7Embl/ENS/IG2/devoir2/files/docs/fuzzyParticles.pdf [Accessed 2017]
+- Shiffman, D. (2012). *The nature of code: Chapter 4. Particle Systems* [online]. Available from: http://natureofcode.com/book/chapter-4-particle-systems/ [Accessed 2017]
+- Greer, M. (2012). *Particle Systems From the Ground Up* [online]. Available from: http://buildnewgames.com/particle-systems/ [Accessed 2017]
+- Macey, J. (2017). *Particle System* [online]. Available from: https://github.com/NCCA/ParticleSystem [Accessed 2017]
+- Macey, J. (2017). *OpenGL Functions* [online]. Available from: https://github.com/NCCA/OpenGLFunctions [Accessed 2017]
