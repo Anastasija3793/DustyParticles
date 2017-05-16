@@ -2,11 +2,11 @@
 DustyParticles is a programming project for Principles and Practice of Programming.
 This is the program which represents a particle system.
 The particle system itself represents a 'cloud' of dust particles.
-The 'cloud' floats diagonally when it is in its normal/default behaviour (state).
+The 'cloud' floats diagonally when it is in its normal / default behaviour (state).
 However, it changes when states are switched (such as 'explosion', 'freeze', 'galaxy')
 by pressing certain keys.
-It is also possible to pause/unpause timer and change particles colours also by keys.
-After a certain time particles return to their normal/default state.
+It is also possible to pause / unpause timer and change particles colours also by keys.
+After a certain time particles return to their normal / default state.
 ## Change colours:
 
 - r - red; 
@@ -19,10 +19,10 @@ After a certain time particles return to their normal/default state.
 
 ## Control keys:
 
-- p - pause/resume; 
+- p - pause / resume; 
 - f - freeze;
 - SPACE - explosion; 
-- TAB - 'dust galaxy'/sphere
+- TAB - 'dust galaxy' / sphere
 - ESC - escape the program
 
 ## Camera control keys:
@@ -31,14 +31,14 @@ After a certain time particles return to their normal/default state.
 - DOWN arrow - move down; 
 - RIGHT arrow - move right; 
 - LEFT arrow - move left;
-- 1 - 'zoom in'/move closer; 
-- 2 - 'zoom out'/move farther; 
-- 0 - return camera to the default position/look at
+- 1 - 'zoom in' / move closer; 
+- 2 - 'zoom out' / move farther; 
+- 0 - return camera to the default position / look at
 - w - look up; 
 - s - look down; 
 - d - look right; 
 - a - look left; 
-- q / e - changing z axis of where camera look at/turn
+- q / e - changing z axis of where camera look at / turn
 
 ## Requirements
 - Qt creator
