@@ -1,17 +1,28 @@
 # DustyParticles
+DustyParticles is my second programming project for Principles and Practice of Programming.
+This is the program which represents a particle system.
+The particle system itself represents a 'cloud' of dust particles.
+The 'cloud' floats diagonally when it is in its normal/default behaviour (state).
+However, it changes when states are switched (such as 'explosion', 'freeze', 'galaxy')
+by pressing certain keys.
+It is also possible to pause/unpause timer and change particles colours also by keys.
+After a certain time particles return to their normal/default state.
 ## Change colours:
 
-r - red; g - green; b - blue; y - yellow; o - white; z - default; ENTER (RETURN) - random colour
+- r - red; 
+- g - green; 
+- b - blue; 
+- y - yellow; 
+- o - white; 
+- z - default; 
+- ENTER (RETURN) - random colour
 
 ## Control keys:
 
-p - pause/resume; 
-
-space - explosion; 
-
-f - freeze;
-
-TAB - 'dust galaxy'/sphere;
+- p - pause/resume; 
+- SPACE - explosion; 
+- f - freeze;
+- TAB - 'dust galaxy'/sphere
 
 ## Camera control keys:
 
