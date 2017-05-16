@@ -44,8 +44,6 @@ After a certain time particles return to their normal / default state.
 - Qt creator
 - OpenGL
 - SDL2
-<<<<<<< HEAD
-=======
 
 ## References
 - William T. Reeves (1983). *Particle Systems - A Technique for Modeling a Class of Fuzzy Objects* [online]. Available from: https://www.lri.fr/%7Embl/ENS/IG2/devoir2/files/docs/fuzzyParticles.pdf [Accessed 2017]
@@ -53,4 +51,4 @@ After a certain time particles return to their normal / default state.
 - Greer, M. (2012). *Particle Systems From the Ground Up* [online]. Available from: http://buildnewgames.com/particle-systems/ [Accessed 2017]
 - Macey, J. (2017). *Particle System* [online]. Available from: https://github.com/NCCA/ParticleSystem [Accessed 2017]
 - Macey, J. (2017). *OpenGL Functions* [online]. Available from: https://github.com/NCCA/OpenGLFunctions [Accessed 2017]
->>>>>>> 39c844145c1c92713cfcffc466aa29a2057ddcc1
+
