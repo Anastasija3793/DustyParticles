@@ -27,20 +27,17 @@ After a certain time particles return to their normal/default state.
 
 ## Camera control keys:
 
-**UP arrow** - move up; 
-
-**DOWN arrow** - move down; 
-
-**RIGHT arrow** - move right; 
-
-**LEFT arrow** - move left;
+- UP arrow - move up; 
+- DOWN arrow - move down; 
+- RIGHT arrow - move right; 
+- LEFT arrow - move left;
 
 - 1 - 'zoom in'/move closer; 
-2 - 'zoom out'/move farther; 
-0 - return camera to the default position/look at
+- 2 - 'zoom out'/move farther; 
+- 0 - return camera to the default position/look at
 
 - w - look up; 
-s - look down; 
-d - look right; 
-a - look left; 
-q / e - changing z axis of where camera look at/turn
+- s - look down; 
+- d - look right; 
+- a - look left; 
+- q / e - changing z axis of where camera look at/turn
